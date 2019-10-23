@@ -1,0 +1,28 @@
+{
+  "name": "roguemodule",
+  "version": "1.0.0",
+  "description": "Rogue user module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "author": "Rogue",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/node": "^7.6.3",
+    "@hapi/hapi": "^18.4.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "babel-upgrade": "^1.0.1",
+    "camaro": "^4.1.2",
+    "easy-soap-request": "^3.2.0",
+    "nodemon": "^1.19.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2"
+  }
+}
