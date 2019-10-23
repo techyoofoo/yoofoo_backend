@@ -287,7 +287,7 @@ export const getCommissionDetails = function (request, reply) {
           AND p.PeriodTypeID = ${data.HistoricalCommission.PeriodTypeID}
           AND p.PeriodID =${data.HistoricalCommission.PeriodID}`
 
-            data.Volumes = volumeResult.recordset
+            data.Volumes = volumeResult.recordset[0]
 
             const historicalBonusDetailsResult = await sql.query` SELECT TOP 24
           cd.BonusID
