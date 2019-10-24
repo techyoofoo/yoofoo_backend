@@ -1,5 +1,5 @@
 'use strict';
-//import {creaetXMLData} from "./xmltemplate";
+import {signIn,welcome} from "./handlers";
 
 const Hapi = require('@hapi/hapi');
 const { transform, prettyPrint } = require('camaro');
@@ -86,9 +86,12 @@ const init = async () => {
                     const { body, statusCode } = response;
                     const result = await transform(response.body, template);
                     var resData="";
-                    if(result.CustomerResult.length>0)
-                    {
-                        resData = result.CustomerResult[0];
+                    if (result.CustomerResult.length > 0) {
+                        var token = signIn({ "username": result.CustomerResult[0].FirstName });
+                        // resData = {"userData":result.CustomerResult[0],
+                        //             "token":token};
+                        //const decoded = welcome({"token":token});
+                        resData = { "token": token };
                     }
                     else{
                         const errresult = await transform(response.body, errortemplate);
