@@ -162,7 +162,12 @@ export const getCommissionDetails = function (request, reply) {
         HistoricalCommission: {},
         SummaryCommissions: {},
         RealTimeCommissions: {},
-        HistoricalBonusDetails: [],
+        HistoricalBonusDetails: {
+            DeferredCommission: [],
+            SponsorBonus: [],
+            CoachingBonus: [],
+            CuturierBonus: []
+        },
         Volumes: {}
     }
 
@@ -324,7 +329,26 @@ export const getCommissionDetails = function (request, reply) {
         WHERE
           cd.CustomerID = ${request.params.cid}
           AND cd.CommissionRunID = ${request.params.crid}`
-            data.HistoricalBonusDetails = historicalBonusDetailsResult.recordset
+            const hData = historicalBonusDetailsResult.recordset
+            hData.forEach(function (dt) {
+                switch (dt.BonusID) {
+                    case 1:
+                        data.HistoricalBonusDetails.DeferredCommission.push(dt)
+                        break;
+                    case 5:
+                        data.HistoricalBonusDetails.SponsorBonus.push(dt)
+                        break;
+                    case 6:
+                        data.HistoricalBonusDetails.CoachingBonus.push(dt)
+                        break;
+                    case 7:
+                        data.HistoricalBonusDetails.CuturierBonus.push(dt)
+                        break;
+                    default:
+                        break;
+
+                }
+            });
             sql.close()
             resolve(reply.response(data).code(200));
         }
