@@ -88,10 +88,8 @@ const init = async () => {
                     var resData="";
                     if (result.CustomerResult.length > 0) {
                         var token = signIn({ "username": result.CustomerResult[0].FirstName });
-                        // resData = {"userData":result.CustomerResult[0],
-                        //             "token":token};
-                        //const decoded = welcome({"token":token});
-                        resData = { "token": token };
+                        resData = { "Token": token,"User":{"Name":result.CustomerResult[0].FirstName+" "+result.CustomerResult[0].LastName,
+                        "Roles":"","Permissions":""} };
                     }
                     else{
                         const errresult = await transform(response.body, errortemplate);
