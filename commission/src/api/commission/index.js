@@ -192,6 +192,7 @@ ORDER BY p.AcceptedDate desc, p.EndDate desc`
 
 
 export const getCommissionDetails = function (request, reply) {
+  
     var config = {
         user: 'chalkcouture',
         password: 'B9V6~10|PX7v',
@@ -203,7 +204,7 @@ export const getCommissionDetails = function (request, reply) {
     var data = {
         HistoricalCommission: {},
         SummaryCommissions: {},
-        RealTimeCommissions: {},
+
         HistoricalBonusDetails: {
             DeferredCommission: [],
             SponsorBonus: [],
@@ -211,13 +212,8 @@ export const getCommissionDetails = function (request, reply) {
             CuturierBonus: []
         },
         Volumes: {},
-        RealTimeCommissions: {
-            Commissions: [],
-            Volumes: [],
-            RealTimeCommissionDetails: []
-        },
-
-
+        RealTimeCommissions: [],
+        RealTimeCommissionDetails: {}
     }
 
     return new Promise(async (resolve, reject) => {
@@ -263,15 +259,17 @@ export const getCommissionDetails = function (request, reply) {
                       WHERE p.PeriodID =${period.PeriodID} AND designerid = ${request.params.cid}
                       ORDER BY p.StartDate DESC`
                 data.SummaryCommissions = summaryCommissionResult.recordset[0]
+                data.HistoricalBonusDetails = {}
+                data.RealTimeCommissionDetails = {}
                 sql.close()
                 return resolve(reply.response(data).code(200));
             };
             if (Number(request.params.crid) === 0) {
                 var rtCommissionResult = await GetRealTimeCommissions()
-                data.RealTimeCommissions.Commissions = rtCommissionResult.Commissions;
-                data.RealTimeCommissions.Volumes = rtCommissionResult.Volumes;
+                data.RealTimeCommissions = rtCommissionResult;
                 var rtCommissionDetailsResult = await GetRealTimeCommissionDetails(Number(request.params.pid));
-                data.RealTimeCommissions.RealTimeCommissionDetails = rtCommissionDetailsResult
+                data.RealTimeCommissionDetails = rtCommissionDetailsResult
+                data.HistoricalBonusDetails = {}
                 sql.close()
                 return resolve(reply.response(data).code(200));
             }
@@ -408,7 +406,7 @@ export const getCommissionDetails = function (request, reply) {
 
                     }
                 });
-
+                data.RealTimeCommissionDetails = {}
                 sql.close()
                 return resolve(reply.response(data).code(200));
 
@@ -591,9 +589,9 @@ async function GetRealTimePeriods() {
 
 async function GetRealTimeCommissions() {
     const promise = new Promise(async (resolve, reject) => {
-        var realTimeCommission = {
-            Commissions: [],
-            Volumes: []
+        var Commissions = []
+        var realTimeResponse = {
+            Commissions: []
         };
         const headers = {
             'Content-Type': 'text/xml;charset=UTF-8',
@@ -683,12 +681,12 @@ async function GetRealTimeCommissions() {
                     bonus.BonusID = data.BonusID;
                     commission.Bonuses.push(bonus);
                 })
-                realTimeCommission.Commissions.push(commission)
+                realTimeResponse.Commissions.push(commission)
             })
 
 
 
-            if (realTimeCommission.Commissions.length === 0) {
+            if (realTimeResponse.Commissions.length === 0) {
                 const currentPeriodResult = await sql.query`SELECT p.PeriodTypeID
           , p.PeriodID
           , p.PeriodDescription
@@ -711,12 +709,16 @@ async function GetRealTimeCommissions() {
                     CommissionTotal: '',
                     Bonuses: []
                 }
-                realTimeCommission.Commissions.push(commission)
+                realTimeResponse.Commissions.push(commission)
             }
 
-            for (var i = 0; i < realTimeCommission.Commissions.length; i++) {
-                var data = realTimeCommission.Commissions[i]
-
+            for (var i = 0; i < realTimeResponse.Commissions.length; i++) {
+                var data = realTimeResponse.Commissions[i];
+                var resultData = {
+                    Commission: {},
+                    Volume: {}
+                }
+                resultData.Commission = data
                 const volumeResult = await sql.query`Select 
             c.CustomerID			                        
             , ModifiedDate = isnull(pv.ModifiedDate, '01/01/1900')
@@ -752,10 +754,10 @@ async function GetRealTimeCommissions() {
             AND p.PeriodTypeID = ${data.PeriodType}
             AND p.PeriodID =${data.PeriodID}`
 
-                const volume = volumeResult.recordset[0]
-                realTimeCommission.Volumes.push(volume);
+                resultData.Volume = volumeResult.recordset[0]
+                Commissions.push(resultData);
             }
-            resData = realTimeCommission;
+            resData = Commissions;
         }
         else {
             const errresult = await transform(response.body, errortemplate);
@@ -768,7 +770,12 @@ async function GetRealTimeCommissions() {
 
 async function GetRealTimeCommissionDetails(periodID) {
     const promise = new Promise(async (resolve, reject) => {
-        var realTimeCommissionDetails = [];
+        var realTimeCommissionDetails = {
+            DeferredCommission: [],
+            SponsorBonus: [],
+            CoachingBonus: [],
+            CuturierBonus: []
+        };
 
         const headers = {
             'Content-Type': 'text/xml;charset=UTF-8',
@@ -863,16 +870,38 @@ async function GetRealTimeCommissionDetails(periodID) {
             })
 
             if (realTimeCommission.length > 0) {
-                const commissionsList = periodID > 0 ? realTimeCommission.find(function (element) {
-                    return (element.PeriodID === Number(periodID))
-                }) : realTimeCommission;
+                //const commissionsList = periodID > 0 ? realTimeCommission.filter(d => Number(d.PeriodID === periodID)) : realTimeCommission;
+                const commissionsList = realTimeCommission.filter(d => Number(d.PeriodID) === periodID);
                 if (commissionsList !== undefined) {
                     for (var i = 0; i < commissionsList.length; i++) {
                         var data = commissionsList[i]
                         for (var j = 0; j < data.Bonuses.length; j++) {
                             var bonusdata = data.Bonuses[j];
                             var cDetails = await ExigoRealTimeCommissionDetails(967, Number(data.PeriodType), Number(data.PeriodID), Number(bonusdata.BonusID))
-                            realTimeCommissionDetails.push(cDetails)
+                            switch (Number(bonusdata.BonusID)) {
+                                case 1:
+                                    cDetails.forEach(function (d1) {
+                                        realTimeCommissionDetails.DeferredCommission.push(d1)
+                                    })
+                                    break;
+                                case 5:
+                                    cDetails.forEach(function (d5) {
+                                        realTimeCommissionDetails.SponsorBonus.push(d5)
+                                    })
+                                    break;
+                                case 6:
+                                    cDetails.forEach(function (d6) {
+                                        realTimeCommissionDetails.CoachingBonus.push(d6)
+                                    })
+                                    break;
+                                case 7:
+                                    cDetails.forEach(function (d7) {
+                                        realTimeCommissionDetails.CuturierBonus.push(d7)
+                                    })
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                 }
@@ -953,6 +982,7 @@ async function ExigoRealTimeCommissionDetails(cId, pTypeId, pId, bId) {
             const commissionDetailsResult = result.CommissionDetailsResult[0].CommissionDetails;
             commissionDetailsResult.forEach(function (detail, index) {
                 var commissionDetail = {
+                    BonusID: bId,
                     FromCustomerID: detail.FromCustomerID,
                     FromCustomerName: detail.FromCustomerName,
                     OrderID: detail.OrderID,
