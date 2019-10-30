@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const userRegistrationSchema = new Schema(
     {
         id: {
-            type: Schema.Types.ObjectId
+            type: String
         },
         firstname: {
             type: String
@@ -34,9 +34,9 @@ const userRegistrationSchema = new Schema(
             enum: ["ANONYMOUS", "CUSTOMER"],
             default: "CUSTOMER"
         },
-        groupid: {
-            type: Schema.Types.ObjectId, ref: "usergroup"
-        },
+        roleid: [{
+            type: Schema.Types.ObjectId, ref: "role"
+        }],
         companyname: {
             type: String
         },
@@ -69,7 +69,7 @@ userRegistrationSchema.methods = {
             mobileno: this.mobileno,
             status: this.status,
             usertype: this.usertype,
-            groupid: this.groupid,
+            roleid: this.roleid,
             companyname: this.companyname,
             status: this.status,
             timestamps: this.timestamps

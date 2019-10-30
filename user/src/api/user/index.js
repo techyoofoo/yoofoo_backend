@@ -15,15 +15,11 @@ export const create = function (request, reply) {
                         message: err.message || "error occurred while creating user."
                     }));
                 });
-
         }
         catch (err) {
             return resolve(reply.response(err));
         }
     });
-
-
-
 }
 
 export const getAll = function (request, reply) {

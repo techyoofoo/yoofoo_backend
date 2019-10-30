@@ -2,29 +2,44 @@ import MenuSchema from './model';
 
 
 export const create = function (request, reply) {
-    const menu = new MenuSchema(request.payload)
+
     return new Promise(async (resolve, reject) => {
         try {
-            menu
-                .save()
-                .then(data => {
-
-                    return resolve(reply.response({ Message: "Created successfully" }).code(200));
-                })
-                .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while creating."
-                    }));
-                });
-
+            MenuSchema.find({
+                name: request.payload.name
+            }).then(result => {
+                if (result.length !== 0)
+                    return resolve(reply.response({ Message: "Menu already exist" }).code(200));
+                else {
+                    MenuSchema.find({}).then(data => {
+                        request.payload.id = data.length + 1
+                        const menu = new MenuSchema(request.payload)
+                        menu
+                            .save()
+                            .then(data => {
+                                return resolve(reply.response({ Message: "Created successfully" }).code(200));
+                            })
+                            .catch(err => {
+                                return resolve(reply.response({
+                                    message: err.message || "error occurred while creating."
+                                }));
+                            });
+                    }).catch(err => {
+                        return resolve(reply.response({
+                            message: err.message
+                        }));
+                    })
+                }
+            }).catch(err => {
+                return resolve(reply.response({
+                    message: err.message || "error occurred while creating menu."
+                }));
+            });
         }
         catch (err) {
             return resolve(reply.response(err));
         }
     });
-
-
-
 }
 
 export const getAll = function (request, reply) {
@@ -87,8 +102,6 @@ export const deleteMenuById = function (request, reply) {
 }
 
 
-
-
 export const findMenuById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -107,6 +120,11 @@ export const findMenuById = function (request, reply) {
         }
     });
 }
+
+
+
+
+
 
 
 
