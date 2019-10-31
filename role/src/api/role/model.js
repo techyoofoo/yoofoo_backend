@@ -8,13 +8,16 @@ const roleSchema = new Schema(
         name: {
             type: String
         },
+        description: {
+            type: String
+        },
         permission: {
             type: Array,
             default: ["read"]
         },
         status: {
             type: String,
-            enum: ["active", "in-active"],
+            enum: ["active", "inactive"],
             default: "active",
             required: true
         },

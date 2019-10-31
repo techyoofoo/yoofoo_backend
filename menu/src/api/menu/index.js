@@ -20,24 +20,22 @@ export const create = function (request, reply) {
                                 return resolve(reply.response({ Message: "Created successfully" }).code(200));
                             })
                             .catch(err => {
-                                return resolve(reply.response({
-                                    message: err.message || "error occurred while creating."
-                                }));
+                                console.log(err.message)
+                                return resolve(reply.response(err.message).code(500));
                             });
                     }).catch(err => {
-                        return resolve(reply.response({
-                            message: err.message
-                        }));
+                        console.log(err.message)
+                        return resolve(reply.response(err.message).code(500));
                     })
                 }
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while creating menu."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -48,13 +46,13 @@ export const getAll = function (request, reply) {
             MenuSchema.find({}).then(result => {
                 return resolve(reply.response(result).code(200));
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while retrieve the menus."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             })
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -67,13 +65,13 @@ export const updateMenuById = function (request, reply) {
                     return resolve(reply.response({ Message: `${MenuInfo.name} Updated Successfully` }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while updating menu."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -90,13 +88,13 @@ export const deleteMenuById = function (request, reply) {
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while deleting menu."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -110,13 +108,13 @@ export const findMenuById = function (request, reply) {
                     return resolve(reply.response(MenuInfo).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }

@@ -10,26 +10,31 @@ export const create = function (request, reply) {
                 if (result.length !== 0)
                     return resolve(reply.response({ Message: "Group already exist" }).code(200));
                 else {
-                    const group = new GroupSchema(request.payload);
-                    group
-                        .save()
-                        .then(data => {
-                            return resolve(reply.response({ Message: "Group saved successfully" }).code(200));
-                        })
-                        .catch(err => {
-                            return resolve(reply.response({
-                                message: err.message || "error occurred while creating the group."
-                            }));
-                        });
+                    GroupSchema.find({}).then(data => {
+                        request.payload.clientid = data.length + 1
+                        const group = new GroupSchema(request.payload);
+                        group
+                            .save()
+                            .then(data => {
+                                return resolve(reply.response({ Message: "Group saved successfully" }).code(200));
+                            })
+                            .catch(err => {
+                                console.log(err.message)
+                                return resolve(reply.response(err.message).code(500));
+                            });
+                    }).catch(err => {
+                        console.log(err.message)
+                        return resolve(reply.response(err.message).code(500));
+                    })
                 }
             }).catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while creating the group."
-                    }));
-                });
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
+            });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -40,13 +45,13 @@ export const getAll = function (request, reply) {
             GroupSchema.find({}).then(result => {
                 return resolve(reply.response(result).code(200));
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while retrieve the groups."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             })
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -59,13 +64,13 @@ export const updateGroupById = function (request, reply) {
                     return resolve(reply.response({ Message: `${GroupInfo.name} Updated Successfully` }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while updating  group."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -82,13 +87,13 @@ export const deleteGroupById = function (request, reply) {
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while deleting group."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -96,18 +101,18 @@ export const deleteGroupById = function (request, reply) {
 export const findGroupById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-             GroupSchema.findById({ _id: request.params.id })
+            GroupSchema.findById({ _id: request.params.id })
                 .then(GroupInfo => {
                     return resolve(reply.response(GroupInfo).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
