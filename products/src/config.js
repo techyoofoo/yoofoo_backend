@@ -23,7 +23,7 @@ const config = {
   all: {
     env: process.env.NODE_ENV || 'development',
     root: path.join(__dirname, '..'),
-    port: process.env.PORT || 9000,
+    port: process.env.PORT || 6011,
     ip: process.env.IP || 'localhost',
     apiRoot: process.env.API_ROOT || '',
     masterKey: requireProcessEnv('MASTER_KEY'),

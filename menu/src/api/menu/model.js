@@ -6,10 +6,14 @@ const menuSchema = new Schema(
             type: String
         },
         clientid: {
-            type: Schema.Types.ObjectId
+            type: String
         },
         name: {
             type: String
+        },
+        type:{
+            type: String,
+            enum: ["menu", "submenu"],
         },
         state: {
             type: String,
