@@ -11,9 +11,9 @@ const groupSchema = new Schema(
         description: {
             type: String
         },
-        roleid: [{
-            type: Schema.Types.ObjectId, ref: "role"
-        }]
+        roleid: {
+            type: String
+        }
     }
 );
 

@@ -9,26 +9,31 @@ export const create = function (request, reply) {
                 if (result.length !== 0)
                     return resolve(reply.response({ Message: "Role already exist" }).code(200));
                 else {
-                    const createRole = new RoleSchema(request.payload);
-                    createRole
-                        .save()
-                        .then(data => {
-                            return resolve(reply.response({ Message: "Role saved successfully" }).code(200));
-                        })
-                        .catch(err => {
-                            return resolve(reply.response({
-                                message: err.message || "error occurred while creating the role."
-                            }));
-                        });
+                    RoleSchema.find({}).then(data => {
+                        request.payload.id = data.length + 1
+                        const createRole = new RoleSchema(request.payload);
+                        createRole
+                            .save()
+                            .then(data => {
+                                return resolve(reply.response({ Message: "Role created successfully" }).code(201));
+                            })
+                            .catch(err => {
+                                console.log(err.message)
+                                return resolve(reply.response(err.message).code(500));
+                            });
+                    }).catch(err => {
+                        console.log(err.message)
+                        return resolve(reply.response(err.message).code(500));
+                    })
                 }
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while creating the role."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -39,13 +44,13 @@ export const getAll = function (request, reply) {
             RoleSchema.find({}).then(result => {
                 return resolve(reply.response(result).code(200));
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while retrieve roles."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             })
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -58,13 +63,13 @@ export const updateRoleById = function (request, reply) {
                     return resolve(reply.response({ Message: `${RoleInfo.name} Updated Successfully` }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while updating role."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -80,13 +85,13 @@ export const deleteRoleById = function (request, reply) {
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while deleting role."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -99,13 +104,13 @@ export const findRoleById = function (request, reply) {
                     return resolve(reply.response(RoleInfo).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
