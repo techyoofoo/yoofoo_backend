@@ -15,7 +15,7 @@ export const create = function (request, reply) {
                         createRole
                             .save()
                             .then(data => {
-                                return resolve(reply.response({ Message: "Role saved successfully" }).code(200));
+                                return resolve(reply.response({ Message: "Role created successfully" }).code(201));
                             })
                             .catch(err => {
                                 console.log(err.message)

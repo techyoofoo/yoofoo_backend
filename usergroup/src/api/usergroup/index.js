@@ -16,7 +16,7 @@ export const create = function (request, reply) {
                         group
                             .save()
                             .then(data => {
-                                return resolve(reply.response({ Message: "Group saved successfully" }).code(200));
+                                return resolve(reply.response({ Message: "Group created successfully" }).code(201));
                             })
                             .catch(err => {
                                 console.log(err.message)

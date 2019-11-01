@@ -17,7 +17,7 @@ export const create = function (request, reply) {
                         menu
                             .save()
                             .then(data => {
-                                return resolve(reply.response({ Message: "Created successfully" }).code(200));
+                                return resolve(reply.response({ Message: "Created successfully" }).code(201));
                             })
                             .catch(err => {
                                 console.log(err.message)
