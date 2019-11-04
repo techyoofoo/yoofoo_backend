@@ -2,22 +2,38 @@ import UserSchema from "./model";
 
 
 export const create = function (request, reply) {
-    const user = new UserSchema(request.payload)
     return new Promise(async (resolve, reject) => {
         try {
-            user
-                .save()
-                .then(data => {
-                    return resolve(reply.response({ Message: "User registered successfully" }).code(200));
-                })
-                .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while creating user."
-                    }));
-                });
+            UserSchema.find({ email: request.payload.email }).then(result => {
+                if (result.length !== 0) {
+                    return resolve(reply.response({ Message: "User already exist" }).code(200));
+                }
+                else {
+                    UserSchema.find({}).then(data => {
+                        request.payload.id = data.length + 1
+                        const user = new UserSchema(request.payload)
+                        user
+                            .save()
+                            .then(data => {
+                                return resolve(reply.response({ Message: "User created successfully" }).code(201));
+                            })
+                            .catch(err => {
+                                console.log(err.message)
+                                return resolve(reply.response(err.message).code(500));
+                            });
+                    }).catch(err => {
+                        console.log(err.message)
+                        return resolve(reply.response(err.message).code(500));
+                    })
+                }
+            }).catch(err => {
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
+            })
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -28,13 +44,13 @@ export const getAll = function (request, reply) {
             UserSchema.find({}).then(result => {
                 return resolve(reply.response(result).code(200));
             }).catch(err => {
-                return resolve(reply.response({
-                    message: err.message || "error occurred while retrieve users."
-                }));
+                console.log(err.message)
+                return resolve(reply.response(err.message).code(500));
             })
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -47,13 +63,13 @@ export const updateUserById = function (request, reply) {
                     return resolve(reply.response({ Message: `${UserInfo.firstname} Updated Successfully` }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while updating user."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
@@ -70,19 +86,16 @@ export const deleteUserById = function (request, reply) {
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message || "error occurred while deleting user."
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }
-
-
-
 
 export const findUserById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
@@ -92,13 +105,13 @@ export const findUserById = function (request, reply) {
                     return resolve(reply.response(UserInfo).code(200));
                 })
                 .catch(err => {
-                    return resolve(reply.response({
-                        message: err.message
-                    }));
+                    console.log(err.message)
+                    return resolve(reply.response(err.message).code(500));
                 });
         }
         catch (err) {
-            return resolve(reply.response(err));
+            console.log(err.message)
+            return resolve(reply.response(err.message).code(500));
         }
     });
 }

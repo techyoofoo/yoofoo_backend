@@ -27,16 +27,16 @@ const userRegistrationSchema = new Schema(
             type: String
         },
         mobileno: {
-            type: Number
+            type: String
         },
         usertype: {
             type: String,
             enum: ["ANONYMOUS", "CUSTOMER"],
             default: "CUSTOMER"
         },
-        roleid: [{
-            type: Schema.Types.ObjectId, ref: "role"
-        }],
+        roleid: {
+            type: String
+        },
         companyname: {
             type: String
         },
