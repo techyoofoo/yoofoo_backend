@@ -80,7 +80,7 @@ export const deleteRoleById = function (request, reply) {
             await RoleSchema.deleteOne({ _id: request.params.id })
                 .then(RoleInfo => {
                     if (RoleInfo.deletedCount > 0)
-                        return resolve(reply.response({ Message: `${request.params.id} Deleted Successfully` }).code(200));
+                        return resolve(reply.response({ Message: `Deleted Successfully` }).code(200));
                     else
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })

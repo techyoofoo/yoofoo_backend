@@ -9,7 +9,7 @@ export const create = function (request, reply) {
                 name: request.payload.name
             }).then(result => {
                 if (result.length !== 0)
-                    return resolve(reply.response({ Message: "Menu already exist" }).code(200));
+                    return resolve(reply.response({ Message: request.payload.name + " already exist" }).code(200));
                 else {
                     MenuSchema.find({}).then(data => {
                         request.payload.id = data.length + 1

@@ -11,6 +11,7 @@ export const create = function (request, reply) {
                 else {
                     UserSchema.find({}).then(data => {
                         request.payload.id = data.length + 1
+                        request.payload.roleid = !request.payload.roleid ? "1" : request.payload.roleid
                         const user = new UserSchema(request.payload)
                         user
                             .save()

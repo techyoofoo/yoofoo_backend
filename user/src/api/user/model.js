@@ -32,7 +32,7 @@ const userRegistrationSchema = new Schema(
         usertype: {
             type: String,
             enum: ["ANONYMOUS", "CUSTOMER"],
-            default: "CUSTOMER"
+            default: "ANONYMOUS"
         },
         roleid: {
             type: String
@@ -42,7 +42,7 @@ const userRegistrationSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["active", "in-active"],
+            enum: ["active", "inactive"],
             default: "active",
             required: true
         },
