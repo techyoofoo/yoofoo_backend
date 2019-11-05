@@ -8,21 +8,28 @@ const roleAccessSchema = new Schema(
         name: {
             type: String
         },
-        description: {
+        roleid: {
             type: String
         },
-        roleid: [
-            { type: Schema.Types.ObjectId, ref: 'role' }
-        ],
         menus: [
             {
-                menu: {
-                    type: String, ref: 'menu'
+                id: {
+                    type: String
                 },
-                permission: {
-                    type: Array,
-                    default: ['read']
-                }
+                parentid: {
+                    type: String
+                },
+                type: {
+                    type: String
+                },
+                permission: [{
+                    id: {
+                        type: String,
+                    },
+                    value: {
+                        type: String
+                    }
+                }]
             }
         ]
     }
