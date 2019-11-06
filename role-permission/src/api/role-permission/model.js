@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const roleAccessSchema = new Schema(
+const rolePermission = new Schema(
     {
         name: {
             type: String
@@ -32,7 +32,7 @@ const roleAccessSchema = new Schema(
     }
 );
 
-roleAccessSchema.methods = {
+rolePermission.methods = {
     view(full) {
         const view = {
             // simple view
@@ -52,7 +52,7 @@ roleAccessSchema.methods = {
     }
 };
 
-const model = mongoose.model("role-access", roleAccessSchema);
+const model = mongoose.model("role-permission", rolePermission);
 
 export const schema = model.schema;
 export default model;
