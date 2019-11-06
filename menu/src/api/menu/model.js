@@ -2,16 +2,10 @@ import mongoose, { Schema } from "mongoose";
 
 const menuSchema = new Schema(
     {
-        id: {
-            type: String
-        },
-        clientid: {
-            type: String
-        },
         name: {
             type: String
         },
-        type:{
+        type: {
             type: String,
             enum: ["menu", "submenu"],
         },
@@ -20,11 +14,13 @@ const menuSchema = new Schema(
             enum: ["enable", "disable"],
             default: "enable"
         },
-        path: {
-            type: String
-        },
         parentid: {
             type: String
+        },
+        timestamps: {
+            type: Date,
+            default: Date.now,
+            required: true
         }
     }
 );
@@ -33,12 +29,11 @@ menuSchema.methods = {
     view(full) {
         const view = {
             // simple view
-            id: this.id,
-            clientid: this.clientid,
             name: this.name,
+            type: this.type,
             state: this.state,
-            path: this.path,
-            parentid: this.parentid
+            parentid: this.parentid,
+            timestamps: this.timestamps
         };
 
         return full

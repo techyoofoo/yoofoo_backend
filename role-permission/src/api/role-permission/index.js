@@ -1,19 +1,20 @@
-import RoleSchema from './model';
+import RolePermissionSchema from './model';
 
 export const create = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-            RoleSchema.find({
+            RolePermissionSchema.find({
                 name: request.payload.name,
+                roleid: request.payload.roleid
             }).then(result => {
                 if (result.length !== 0)
-                    return resolve(reply.response({ Message: "Role already exist" }).code(200));
+                    return resolve(reply.response({ Message: request.payload.name + " already exist with same role, you can update the permission." }).code(200));
                 else {
-                    const createRole = new RoleSchema(request.payload);
-                    createRole
+                    const rolepermission = new RolePermissionSchema(request.payload)
+                    rolepermission
                         .save()
                         .then(data => {
-                            return resolve(reply.response({ Message: "Role created successfully" }).code(201));
+                            return resolve(reply.response({ Message: "Created successfully" }).code(201));
                         })
                         .catch(err => {
                             console.log(err.message)
@@ -23,7 +24,7 @@ export const create = function (request, reply) {
             }).catch(err => {
                 console.log(err.message)
                 return resolve(reply.response(err.message).code(500));
-            });
+            })
         }
         catch (err) {
             console.log(err.message)
@@ -32,10 +33,11 @@ export const create = function (request, reply) {
     });
 }
 
+
 export const getAll = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-            RoleSchema.find({}).then(result => {
+            RolePermissionSchema.find({}).then(result => {
                 return resolve(reply.response(result).code(200));
             }).catch(err => {
                 console.log(err.message)
@@ -49,12 +51,13 @@ export const getAll = function (request, reply) {
     });
 }
 
-export const updateRoleById = function (request, reply) {
+
+export const updateRolePermissionById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-            await RoleSchema.findOneAndUpdate({ _id: request.params.id }, request.payload, { new: false })
-                .then(RoleInfo => {
-                    return resolve(reply.response({ Message: `${RoleInfo.name} Updated Successfully` }).code(200));
+            await RolePermissionSchema.findOneAndUpdate({ _id: request.params.id }, request.payload, { new: false })
+                .then(result => {
+                    return resolve(reply.response({ Message: `${result.name} Updated Successfully` }).code(200));
                 })
                 .catch(err => {
                     console.log(err.message)
@@ -68,13 +71,14 @@ export const updateRoleById = function (request, reply) {
     });
 }
 
-export const deleteRoleById = function (request, reply) {
+
+export const deleteRolePermissionById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-            await RoleSchema.deleteOne({ _id: request.params.id })
-                .then(RoleInfo => {
-                    if (RoleInfo.deletedCount > 0)
-                        return resolve(reply.response({ Message: `Deleted Successfully` }).code(200));
+            await RolePermissionSchema.deleteOne({ _id: request.params.id })
+                .then(result => {
+                    if (result.deletedCount > 0)
+                        return resolve(reply.response({ Message: `${request.params.id} Deleted Successfully` }).code(200));
                     else
                         return resolve(reply.response({ Message: "No records found" }).code(200));
                 })
@@ -90,12 +94,15 @@ export const deleteRoleById = function (request, reply) {
     });
 }
 
-export const findRoleById = function (request, reply) {
+
+
+
+export const findRolePermissionById = function (request, reply) {
     return new Promise(async (resolve, reject) => {
         try {
-            await RoleSchema.findById({ _id: request.params.id })
-                .then(RoleInfo => {
-                    return resolve(reply.response(RoleInfo).code(200));
+            await RolePermissionSchema.findById({ _id: request.params.id })
+                .then(result => {
+                    return resolve(reply.response(result).code(200));
                 })
                 .catch(err => {
                     console.log(err.message)
@@ -108,6 +115,18 @@ export const findRoleById = function (request, reply) {
         }
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

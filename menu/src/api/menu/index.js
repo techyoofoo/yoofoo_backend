@@ -11,22 +11,16 @@ export const create = function (request, reply) {
                 if (result.length !== 0)
                     return resolve(reply.response({ Message: request.payload.name + " already exist" }).code(200));
                 else {
-                    MenuSchema.find({}).then(data => {
-                        request.payload.id = data.length + 1
-                        const menu = new MenuSchema(request.payload)
-                        menu
-                            .save()
-                            .then(data => {
-                                return resolve(reply.response({ Message: "Created successfully" }).code(201));
-                            })
-                            .catch(err => {
-                                console.log(err.message)
-                                return resolve(reply.response(err.message).code(500));
-                            });
-                    }).catch(err => {
-                        console.log(err.message)
-                        return resolve(reply.response(err.message).code(500));
-                    })
+                    const menu = new MenuSchema(request.payload)
+                    menu
+                        .save()
+                        .then(data => {
+                            return resolve(reply.response({ Message: "Created successfully" }).code(201));
+                        })
+                        .catch(err => {
+                            console.log(err.message)
+                            return resolve(reply.response(err.message).code(500));
+                        });
                 }
             }).catch(err => {
                 console.log(err.message)

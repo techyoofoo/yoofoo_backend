@@ -21,7 +21,6 @@ groupSchema.methods = {
     view(full) {
         const view = {
             // simple view
-            id: this.id,
             clientid: this.clientid,
             name: this.name,
             description: this.description,

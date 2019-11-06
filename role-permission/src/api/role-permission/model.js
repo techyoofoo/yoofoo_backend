@@ -1,34 +1,38 @@
 import mongoose, { Schema } from "mongoose";
 
-const roleAccessSchema = new Schema(
+const rolePermission = new Schema(
     {
-        id: {
-            type: String
-        },
         name: {
             type: String
         },
-        description: {
+        roleid: {
             type: String
         },
-        roleid: [
-            { type: Schema.Types.ObjectId, ref: 'role' }
-        ],
         menus: [
             {
-                menu: {
-                    type: String, ref: 'menu'
+                _id: {
+                    type: Schema.Types.ObjectId
                 },
-                permission: {
-                    type: Array,
-                    default: ['read']
-                }
+                parentid: {
+                    type: String
+                },
+                type: {
+                    type: String
+                },
+                permission: [{
+                    _id: {
+                        type: Schema.Types.ObjectId,
+                    },
+                    value: {
+                        type: Boolean
+                    }
+                }]
             }
         ]
     }
 );
 
-roleAccessSchema.methods = {
+rolePermission.methods = {
     view(full) {
         const view = {
             // simple view
@@ -48,7 +52,7 @@ roleAccessSchema.methods = {
     }
 };
 
-const model = mongoose.model("role-access", roleAccessSchema);
+const model = mongoose.model("role-permission", rolePermission);
 
 export const schema = model.schema;
 export default model;
