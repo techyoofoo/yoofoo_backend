@@ -2,9 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const roleSchema = new Schema(
     {
-        id: {
-            type: String
-        },
         name: {
             type: String
         },
@@ -29,9 +26,8 @@ roleSchema.methods = {
     view(full) {
         const view = {
             // simple view
-            id: this.id,
             name: this.name,
-            permission: this.permission,
+            description: this.description,
             status: this.status,
             timestamps: this.timestamps
         };

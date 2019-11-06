@@ -2,9 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const roleAccessSchema = new Schema(
     {
-        id: {
-            type: String
-        },
         name: {
             type: String
         },
@@ -13,8 +10,8 @@ const roleAccessSchema = new Schema(
         },
         menus: [
             {
-                id: {
-                    type: String
+                _id: {
+                    type: Schema.Types.ObjectId
                 },
                 parentid: {
                     type: String
@@ -23,11 +20,11 @@ const roleAccessSchema = new Schema(
                     type: String
                 },
                 permission: [{
-                    id: {
-                        type: String,
+                    _id: {
+                        type: Schema.Types.ObjectId,
                     },
                     value: {
-                        type: String
+                        type: Boolean
                     }
                 }]
             }

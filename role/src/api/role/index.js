@@ -9,22 +9,16 @@ export const create = function (request, reply) {
                 if (result.length !== 0)
                     return resolve(reply.response({ Message: "Role already exist" }).code(200));
                 else {
-                    RoleSchema.find({}).then(data => {
-                        request.payload.id = data.length + 1
-                        const createRole = new RoleSchema(request.payload);
-                        createRole
-                            .save()
-                            .then(data => {
-                                return resolve(reply.response({ Message: "Role created successfully" }).code(201));
-                            })
-                            .catch(err => {
-                                console.log(err.message)
-                                return resolve(reply.response(err.message).code(500));
-                            });
-                    }).catch(err => {
-                        console.log(err.message)
-                        return resolve(reply.response(err.message).code(500));
-                    })
+                    const createRole = new RoleSchema(request.payload);
+                    createRole
+                        .save()
+                        .then(data => {
+                            return resolve(reply.response({ Message: "Role created successfully" }).code(201));
+                        })
+                        .catch(err => {
+                            console.log(err.message)
+                            return resolve(reply.response(err.message).code(500));
+                        });
                 }
             }).catch(err => {
                 console.log(err.message)

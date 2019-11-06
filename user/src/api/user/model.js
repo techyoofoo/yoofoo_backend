@@ -2,9 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const userRegistrationSchema = new Schema(
     {
-        id: {
-            type: String
-        },
         firstname: {
             type: String
         },
@@ -58,7 +55,6 @@ userRegistrationSchema.methods = {
     view(full) {
         const view = {
             // simple view
-            id: this.id,
             firstname: this.firstname,
             lastname: this.lastname,
             email: this.email,

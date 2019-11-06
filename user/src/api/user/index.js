@@ -9,23 +9,18 @@ export const create = function (request, reply) {
                     return resolve(reply.response({ Message: "User already exist" }).code(200));
                 }
                 else {
-                    UserSchema.find({}).then(data => {
-                        request.payload.id = data.length + 1
-                        request.payload.roleid = !request.payload.roleid ? "1" : request.payload.roleid
-                        const user = new UserSchema(request.payload)
-                        user
-                            .save()
-                            .then(data => {
-                                return resolve(reply.response({ Message: "User created successfully" }).code(201));
-                            })
-                            .catch(err => {
-                                console.log(err.message)
-                                return resolve(reply.response(err.message).code(500));
-                            });
-                    }).catch(err => {
-                        console.log(err.message)
-                        return resolve(reply.response(err.message).code(500));
-                    })
+                    request.payload.roleid = !request.payload.roleid ? "5dc278e9b0e3cc2e8898d4b6" : request.payload.roleid
+                    const user = new UserSchema(request.payload)
+                    user
+                        .save()
+                        .then(data => {
+                            return resolve(reply.response({ Message: "User created successfully" }).code(201));
+                        })
+                        .catch(err => {
+                            console.log(err.message)
+                            return resolve(reply.response(err.message).code(500));
+                        });
+
                 }
             }).catch(err => {
                 console.log(err.message)
