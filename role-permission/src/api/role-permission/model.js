@@ -13,15 +13,7 @@ const rolePermission = new Schema(
             enum: ['view', 'create', 'edit', 'delete', 'execute'],
             default: 'view'
         },
-        // permission: [{
-        //     _id: {
-        //         type: Schema.Types.ObjectId,
-        //     },
-        //     value: {
-        //         type: Boolean
-        //     }
-        // }]
-
+        //permission: [String]
     }
 );
 
