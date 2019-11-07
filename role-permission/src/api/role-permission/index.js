@@ -8,7 +8,7 @@ export const create = function (request, reply) {
                 roleid: request.payload.roleid
             }).then(result => {
                 if (result.length !== 0)
-                    return resolve(reply.response({ Message: request.payload.name + " already exist with same role, you can update the permission." }).code(200));
+                    return resolve(reply.response({ _id: result[0]._id, Message: request.payload.name + " already exist with same role" }).code(200));
                 else {
                     const rolepermission = new RolePermissionSchema(request.payload)
                     rolepermission

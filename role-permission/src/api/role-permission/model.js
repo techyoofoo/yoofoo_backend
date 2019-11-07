@@ -8,27 +8,20 @@ const rolePermission = new Schema(
         roleid: {
             type: String
         },
-        menus: [
-            {
-                _id: {
-                    type: Schema.Types.ObjectId
-                },
-                parentid: {
-                    type: String
-                },
-                type: {
-                    type: String
-                },
-                permission: [{
-                    _id: {
-                        type: Schema.Types.ObjectId,
-                    },
-                    value: {
-                        type: Boolean
-                    }
-                }]
-            }
-        ]
+        permission: {
+            type: [String],
+            enum: ['view', 'create', 'edit', 'delete', 'execute'],
+            default: 'view'
+        },
+        // permission: [{
+        //     _id: {
+        //         type: Schema.Types.ObjectId,
+        //     },
+        //     value: {
+        //         type: Boolean
+        //     }
+        // }]
+
     }
 );
 
