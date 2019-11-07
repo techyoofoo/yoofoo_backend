@@ -7,25 +7,30 @@ db.permissions.drop();
 
 db.permissions.save(
     [
-        {
-            _id: ObjectId("5dc1472491aee6e859ce1110"),
-            name: "read",
-            state: "enable"
-        },
-        {
-            _id: ObjectId("5dc1472491aee6e859ce1111"),
-            name:"create",
-            state:"enable"
-        },
-        {
-            _id: ObjectId("5dc1472491aee6e859ce1112"),
-            name:"update",
-            state:"enable"
-        },
-        {
-            _id:ObjectId("5dc1472491aee6e859ce1113"),
-            name:"delete",
-            state:"enable"
-         }   
+       {
+    _id: "view",
+    name: "view",
+    state: "enable"
+  },
+  {
+    _id: "create",
+    name: "create",
+    state: "enable"
+  },
+  {
+    _id: "edit",
+    name: "edit",
+    state: "enable"
+  },
+  {
+    _id: "delete",
+    name: "delete",
+    state: "enable"
+  },
+  {
+    _id: "execute",
+    name: "execute",
+    state: "enable"
+  }
     ]
 );
