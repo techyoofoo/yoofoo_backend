@@ -8,12 +8,10 @@ const rolePermission = new Schema(
         roleid: {
             type: String
         },
-        permission: {
-            type: [String],
-            enum: ['view', 'create', 'edit', 'delete', 'execute'],
-            default: 'view'
-        },
-        //permission: [String]
+        permission: [{
+            type: String
+        }]
+    
     }
 );
 
