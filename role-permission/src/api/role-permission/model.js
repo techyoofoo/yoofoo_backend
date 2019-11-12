@@ -2,9 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const rolePermission = new Schema(
     {
-        name: {
-            type: String
-        },
         roleid: {
             type: String
         },
@@ -20,8 +17,6 @@ rolePermission.methods = {
         const view = {
             // simple view
             id: this.id,
-            name: this.name,
-            description: this.description,
             roleid: this.roleid,
             menu: this.menu
         };
