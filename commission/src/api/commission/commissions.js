@@ -33,7 +33,7 @@ export const getSummaryCommissions = function (customerID) {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -68,7 +68,7 @@ export const getCommissionPeriod = function () {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -94,7 +94,7 @@ export const getCurrentPeriod = function () {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -120,7 +120,7 @@ export const getPeriods = function (periodTypeID, periodID) {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -173,7 +173,7 @@ export const getHistoricalCommissions = function (customerID, CommissionRunID) {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -223,7 +223,7 @@ export const getVolumes = function (customerID, periodTypeID, periodID) {
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
@@ -273,7 +273,7 @@ export const getHistoricalBonusDetails = function (customerID, commissionRunID) 
         }
         catch (error) {
             sql.close()
-            throw err
+            throw error
         }
     });
     return promise;
