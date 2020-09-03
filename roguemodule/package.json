@@ -10,7 +10,7 @@
   "author": "Rogue",
   "license": "ISC",
   "dependencies": {
-    "@hapi/hapi": "^18.4.0",
+    "@hapi/hapi": "^19.1.1",
     "camaro": "^4.1.2",
     "easy-soap-request": "^3.2.0",
     "hapi": "^18.1.0",
