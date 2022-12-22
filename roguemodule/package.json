@@ -14,7 +14,7 @@
     "camaro": "^4.1.2",
     "easy-soap-request": "^3.2.0",
     "hapi": "^18.1.0",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
